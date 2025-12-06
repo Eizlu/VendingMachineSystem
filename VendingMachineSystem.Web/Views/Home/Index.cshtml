@@ -1,0 +1,70 @@
+﻿@using VendingMachineSystem.Web.Models
+@model List<AutomatKartaViewModel>
+
+@{
+    ViewData["Title"] = "Dashboard automatů";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-5" style="font-family: 'Segoe Print', cursive;">Dashboard automatů</h1>
+</div>
+
+<div class="row">
+    @foreach (var karta in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0" style="height: calc(100vh - 220px);">
+
+                <div class="card-header bg-white d-flex justify-content-between align-items-center flex-shrink-0" style="height: 60px;">
+                    <h5 class="m-0 text-truncate" title="@karta.Info.Lokalita">@karta.Info.Lokalita</h5>
+
+                    @if (karta.Info.Stav == "Online")
+                    {
+                        <span class="badge bg-success">Online</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">@karta.Info.Stav</span>
+                    }
+                </div>
+
+                <div class="card-body overflow-hidden p-0">
+                    <div class="p-3">
+                        <h6 class="text-muted mb-2">Stav zásob:</h6>
+
+                        <ul class="list-group list-group-flush small">
+                            @foreach (var zbozi in karta.Zasoby)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 border-0">
+                                    <span class="text-truncate" style="max-width: 150px;">@zbozi.NazevProduktu</span>
+
+                                    @if (zbozi.Mnozstvi < zbozi.MinimaleLimit)
+                                    {
+                                        <span class="fw-bold text-danger">@zbozi.Mnozstvi ks</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-success">@zbozi.Mnozstvi ks</span>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-white border-top-0 pb-3 flex-shrink-0">
+                    <a asp-action="Detail" asp-route-id="@karta.Info.Id" class="btn btn-outline-primary w-100">
+                        @if (karta.VyzadujePozornost)
+                        {
+                            <span>Spravovat automat</span>
+                        }
+                        else
+                        {
+                            <span>Detail automatu</span>
+                        }
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

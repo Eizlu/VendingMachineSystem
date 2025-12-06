@@ -1,0 +1,77 @@
+﻿@using VendingMachineSystem.Core
+@model List<ZasobaAutomatu>
+
+@{
+    // Vytáhneme si info o automatu z "batohu"
+    var automat = ViewBag.Automat as Automat;
+    ViewData["Title"] = "Detail automatu";
+}
+
+@if (TempData["Zprava"] != null)
+{
+    <div class="alert alert-@TempData["TypZpravy"] alert-dismissible fade show" role="alert">
+        @TempData["Zprava"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container">
+    <div class="mb-4">
+        <h2>Detail automatu: @automat.Lokalita</h2>
+        <p>
+            <strong>Stav:</strong> @automat.Stav <br />
+            <strong>Typ:</strong> @automat.Typ
+        </p>
+        <a asp-action="Index" class="btn btn-secondary">zpět na seznam</a>
+    </div>
+
+    <h3>Stav zásob</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Aktuální množství</th>
+                <th>Minimální limit</th>
+                <th>Stav</th>
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var polozka in Model)
+            {
+                // Jednoduchá logika pro barvení řádku
+                // Pokud je množství menší než limit, řádek zčervená
+                string tridaRadku = polozka.Mnozstvi < polozka.MinimaleLimit ? "table-danger" : "";
+
+                <tr class="@tridaRadku">
+                    <td>@polozka.NazevProduktu</td>
+                    <td>@polozka.Mnozstvi ks</td>
+                    <td>@polozka.MinimaleLimit ks</td>
+                    <td>
+                        @if (polozka.Mnozstvi < polozka.MinimaleLimit)
+                        {
+                            <span class="text-danger fw-bold">DOPLNIT!</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">OK</span>
+                        }
+                    </td>
+                    <td>
+                        @if (polozka.Mnozstvi < polozka.MinimaleLimit)
+                        {
+                            <form asp-action="Doplnit" method="post" class="d-flex gap-2">
+                                <input type="hidden" name="zasobaId" value="@polozka.Id" />
+                                <input type="hidden" name="automatId" value="@polozka.AutomatId" />
+
+                                <input type="number" name="mnozstvi" class="form-control form-control-sm" style="width: 70px;" value="10" min="1" max="50" />
+
+                                <button type="submit" class="btn btn-sm btn-primary">OK</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

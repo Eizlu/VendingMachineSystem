@@ -1,0 +1,35 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VendingMachineSystem.Mobile.LoginPage"
+             BackgroundColor="#f0f2f5">
+
+    <ContentPage.Content>
+        <Grid>
+            <Frame HorizontalOptions="Center" VerticalOptions="Center" 
+                   WidthRequest="350" CornerRadius="15" HasShadow="True" Padding="30" BackgroundColor="White">
+
+                <VerticalStackLayout Spacing="20">
+
+                    <Label Text="Systém pro správu automatů" 
+                           FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#333" 
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="Mobilní Terminál" 
+                           FontSize="14" HorizontalOptions="Center" TextColor="Gray" Margin="0,-10,0,10"/>
+
+                    <Entry x:Name="EntLogin" Placeholder="Login" BackgroundColor="#f9f9f9" TextColor="Black"/>
+
+                    <Entry x:Name="EntHeslo" Placeholder="Heslo" IsPassword="True" BackgroundColor="#f9f9f9" TextColor="Black"/>
+                    <Button Text="Přihlásit se" 
+                            Clicked="OnLoginClicked"
+                            BackgroundColor="#0d6efd" 
+                            TextColor="White" 
+                            FontAttributes="Bold"
+                            CornerRadius="8"
+                            HeightRequest="45"/>
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,33 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VendingMachineSystem.Mobile.DetailAutomatuPage"
+             BackgroundColor="#F5F5F5"
+             Title="Správa zásob">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Frame BorderColor="Transparent" CornerRadius="15" BackgroundColor="White" HasShadow="True" Padding="20">
+                <VerticalStackLayout Spacing="5">
+                    <Label x:Name="LblNadpis" FontSize="24" FontAttributes="Bold" TextColor="#333"/>
+                    <BoxView HeightRequest="1" Color="#EEE" Margin="0,5"/>
+                    <Label x:Name="LblInfo" FontSize="14" TextColor="#666"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="Seznam produktů" FontSize="18" FontAttributes="Bold" TextColor="#333" Margin="5,0,0,0"/>
+
+            <VerticalStackLayout x:Name="LayoutZasoby" Spacing="12">
+            </VerticalStackLayout>
+
+            <Button Text="⬅ Zpět na seznam" 
+                    Clicked="OnZpetClicked" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#555" 
+                    BorderColor="#AAA" 
+                    BorderWidth="1"
+                    Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,66 @@
+﻿@using VendingMachineSystem.Core
+@model List<ZasobaSkladu>
+
+@{
+    ViewData["Title"] = "Centrální sklad";
+}
+
+<h1>Centrální sklad</h1>
+<p>Přehled zásob na hlavním skladě.</p>
+
+@if (TempData["Zprava"] != null)
+{
+    <div class="alert alert-@TempData["TypZpravy"] alert-dismissible fade show" role="alert">
+        @TempData["Zprava"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="mb-3">
+    <a asp-action="Exportovat" class="btn btn-secondary">📄 Exportovat stav skladu do XML</a>
+</div>
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Produkt</th>
+            <th>Množství na skladě</th>
+            <th>Stav</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var polozka in Model)
+        {
+            // Pokud je potřeba objednat (méně než 10), řádek zežloutne
+            string trida = polozka.JePotrebaObjednat ? "table-warning" : "";
+
+            <tr class="@trida">
+                <td>@polozka.NazevProduktu</td>
+                <td>@polozka.Mnozstvi ks</td>
+                <td>
+                    @if (polozka.JePotrebaObjednat)
+                    {
+                        <strong class="text-danger">DOCHÁZÍ ZÁSOBY!</strong>
+                    }
+                    else
+                    {
+                        <span class="text-success">Dostatek</span>
+                    }
+                </td>
+                <td>
+                    @if (polozka.JePotrebaObjednat)
+                    {
+                        <form asp-action="VytvoritObjednavku" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="produktId" value="@polozka.ProduktId" />
+
+                            <input type="number" name="mnozstvi" class="form-control form-control-sm" style="width: 80px;" value="50" min="1" />
+
+                            <button type="submit" class="btn btn-warning btn-sm">Objednat</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

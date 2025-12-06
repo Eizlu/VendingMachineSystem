@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="VendingMachineSystem.BLL/VendingMachineSystem.BLL.csproj" />
+  <Project Path="VendingMachineSystem.Core/VendingMachineSystem.Core.csproj" />
+  <Project Path="VendingMachineSystem.DAL/VendingMachineSystem.DAL.csproj" />
+  <Project Path="VendingMachineSystem.Mobile/VendingMachineSystem.Mobile.csproj" Id="186fbf02-3f93-4d81-80c0-2ff23583fa54">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="VendingMachineSystem.Web/VendingMachineSystem.Web.csproj" />
+</Solution>

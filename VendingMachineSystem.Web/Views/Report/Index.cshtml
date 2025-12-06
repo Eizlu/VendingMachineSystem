@@ -1,0 +1,92 @@
+﻿@model List<VendingMachineSystem.Core.StatistikaProdeje>
+
+@{
+    ViewData["Title"] = "Analýza prodejnosti";
+    // Spočítáme celkovou sumu pro patičku tabulky
+    decimal celkemKc = Model.Sum(x => x.CelkovaTrzba);
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-5" style="font-family: 'Segoe Print', cursive;">Finanční analýza</h1>
+</div>
+
+<div class="card p-4 mb-4 shadow-sm">
+    <form asp-action="Generovat" method="post" class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">Datum Od:</label>
+            <input type="date" name="datumOd" class="form-control" value="@ViewBag.DatumOd" required />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Datum Do:</label>
+            <input type="date" name="datumDo" class="form-control" value="@ViewBag.DatumDo" required />
+        </div>
+        <div class="col-md-4 d-flex gap-2">
+            <button type="submit" formaction="/Report/Generovat" class="btn btn-primary flex-grow-1">📊 Zobrazit</button>
+
+            <button type="submit" formaction="/Report/ExportovatXml" class="btn btn-outline-secondary" title="Uložit do XML">💾 XML</button>
+        </div>
+    </form>
+</div>
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="m-0">Nejprodávanější produkty</h5>
+                </div>
+                <table class="table table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Produkt</th>
+                            <th class="text-end">Prodáno ks</th>
+                            <th class="text-end">Tržba</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var radek in Model)
+                        {
+                            <tr>
+                                <td>@radek.NazevProduktu</td>
+                                <td class="text-end fw-bold">@radek.ProdaneKusy</td>
+                                <td class="text-end text-success">@radek.CelkovaTrzba.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="fw-bold fs-5">
+                            <td>CELKEM</td>
+                            <td class="text-end">@Model.Sum(x => x.ProdaneKusy)</td>
+                            <td class="text-end text-primary">@celkemKc.ToString("C")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3 shadow">
+                <div class="card-header">Celkové tržby</div>
+                <div class="card-body">
+                    <h2 class="card-title">@celkemKc.ToString("C0")</h2>
+                    <p class="card-text">Za vybrané období</p>
+                </div>
+            </div>
+
+            <div class="card text-dark bg-warning mb-3 shadow">
+                <div class="card-header">Top produkt</div>
+                <div class="card-body">
+                    <h4 class="card-title">@Model.FirstOrDefault()?.NazevProduktu</h4>
+                    <p class="card-text">Nejvyšší obrat</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center">
+        Zatím nebyl vygenerován žádný report nebo pro zadané období nejsou data.
+    </div>
+}

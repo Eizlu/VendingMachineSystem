@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null; // Login stránka nemá horní menu
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Přihlášení - IS Automat</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body { background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-box { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        .btn-custom { background-color: #ddd; border: 1px solid #999; width: 100%; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="login-box text-center">
+        <h2 class="mb-4" style="font-family: 'Segoe Print', cursive;">Systém pro správu automatů</h2>
+
+        <div class="card p-4 bg-light">
+            <h4 class="mb-3">Přihlášení do systému</h4>
+
+            @if (ViewBag.Chyba != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Chyba</div>
+            }
+
+            <form asp-action="Prihlasit" method="post">
+                <div class="mb-3 text-start">
+                    <label>Login:</label>
+                    <input type="text" name="login" class="form-control" required />
+                </div>
+                <div class="mb-3 text-start">
+                    <label>Heslo:</label>
+                    <input type="password" name="heslo" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-custom">přihlásit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
