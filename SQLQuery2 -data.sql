@@ -10,60 +10,60 @@ DELETE FROM Produkt;
 DELETE FROM Uzivatel;
 
 -- Resetování ID na 1 (aby číslování začínalo zase od jedničky)
-DBCC CHECKIDENT ('Automat', RESEED, 0);
-DBCC CHECKIDENT ('Produkt', RESEED, 0);
-DBCC CHECKIDENT ('Uzivatel', RESEED, 0);
-DBCC CHECKIDENT ('ZasobaAutomatu', RESEED, 0);
-DBCC CHECKIDENT ('Objednavka', RESEED, 0);
+DBCC CHECKIDENT ( N'Automat', RESEED, 0);
+DBCC CHECKIDENT ( N'Produkt', RESEED, 0);
+DBCC CHECKIDENT ( N'Uzivatel', RESEED, 0);
+DBCC CHECKIDENT ( N'ZasobaAutomatu', RESEED, 0);
+DBCC CHECKIDENT ( N'Objednavka', RESEED, 0);
 
 -- 2. IMPORT UŽIVATELŮ (Mapujeme staré 'spravce' na nové 'Uzivatel')
 -- Data převzata z
 INSERT INTO Uzivatel (Jmeno, Login, Heslo, Role) VALUES 
-('Adam Novák', 'adam', 'admin123', 'Administrator'), -- Původní ID 1
-('Jan Pospíšil', 'jan', 'jan123', 'Skladnik'),      -- Původní ID 2
-('Dana Kalusová', 'dana', 'dana123', 'Provozovatel'),-- Původní ID 3
-('Marie Pastorková', 'marie', 'marie123', 'Pracovnik'), -- Původní ID 4
-('Jakub Fitřík', 'jakub', 'jakub123', 'Pracovnik');  -- Původní ID 5
+( N'Adam Novák', N'adam', N'admin123', N'Administrator'), -- Původní ID 1
+( N'Jan Pospíšil', N'jan', N'jan123', N'Skladnik'),      -- Původní ID 2
+( N'Dana Kalusová', N'dana', N'dana123', N'Provozovatel'),-- Původní ID 3
+( N'Marie Pastorková', N'marie', N'marie123', N'Pracovnik'), -- Původní ID 4
+( N'Jakub Fitřík', N'jakub', N'jakub123', N'Pracovnik');  -- Původní ID 5
 
 -- 3. IMPORT AUTOMATŮ
 -- Data převzata z, přidáváme Typ a Stav
 INSERT INTO Automat (Lokalita, Stav, Typ) VALUES 
-('Ostrava, Forum Nová Karolina, 0.patro', 'Online', 'Mix'),
-('Ostrava, Forum Nová Karolina, 2.patro', 'Online', 'Napoje'),
-('Ostrava, Obchodní dům OC Laso, 0.patro', 'Offline', 'Jidlo'),
-('Ostrava, Karolina nákupní centrum', 'Online', 'Mix'),
-('Ostrava, OC Futurum, 0.patro', 'Online', 'Napoje'),
-('Ostrava, Čez Korporátní Služby, 2.patro', 'Porucha', 'Jidlo'),
-('Ostrava, Supermarket BILLA, 1. máje', 'Online', 'Mix'),
-('Ostrava, Obchodní centrum Galerie', 'Online', 'Napoje'),
-('Ostrava, Nákupní centrum Géčko', 'Offline', 'Mix'),
-('Ostrava, Avion Shopping Park', 'Online', 'Jidlo'),
-('Ostrava, Nákupní středisko KOTVA', 'Online', 'Mix'),
-('Ostrava, Poliklinika Hrabuvka', 'Online', 'Napoje'),
-('Ostrava, Albert Hypermarket Dubina', 'Online', 'Mix');
+( N'Ostrava, Forum Nová Karolina, 0.patro', N'Online', N'Mix'),
+( N'Ostrava, Forum Nová Karolina, 2.patro', N'Online', N'Napoje'),
+( N'Ostrava, Obchodní dům OC Laso, 0.patro', N'Offline', N'Jidlo'),
+( N'Ostrava, Karolina nákupní centrum', N'Online', N'Mix'),
+( N'Ostrava, OC Futurum, 0.patro', N'Online', N'Napoje'),
+( N'Ostrava, Čez Korporátní Služby, 2.patro', N'Porucha', N'Jidlo'),
+( N'Ostrava, Supermarket BILLA, 1. máje', N'Online', N'Mix'),
+( N'Ostrava, Obchodní centrum Galerie', N'Online', N'Napoje'),
+( N'Ostrava, Nákupní centrum Géčko', N'Offline', N'Mix'),
+( N'Ostrava, Avion Shopping Park', N'Online', N'Jidlo'),
+( N'Ostrava, Nákupní středisko KOTVA', N'Online', N'Mix'),
+( N'Ostrava, Poliklinika Hrabůvka', N'Online', N'Napoje'),
+( N'Ostrava, Albert Hypermarket Dubina', N'Online', N'Mix');
 
 -- 4. IMPORT PRODUKTŮ
 -- Data převzata z, ceny a kategorie odhadujeme
 INSERT INTO Produkt (Nazev, Cena, Kategorie, Ean) VALUES 
-('Tatranka lísková', 15.00, 'Jidlo', '8591234567890'), -- ID 1
-('Tatranka mléčná', 15.00, 'Jidlo', '8591234567891'),
-('Fidorka mléčná kokos', 20.00, 'Jidlo', '8591234567892'),
-('Fidorka bílá', 20.00, 'Jidlo', '8591234567893'),
-('Mila řezy', 18.00, 'Jidlo', '8591234567894'),
-('Zlaté Polomáčené', 22.00, 'Jidlo', '8591234567895'),
-('Twix', 25.00, 'Jidlo', '8591234567896'),
-('Brambůrky solené', 30.00, 'Jidlo', '8591234567897'),
-('Brambůrky česnekové', 30.00, 'Jidlo', '8591234567898'),
-('Tuc mini krekry', 25.00, 'Jidlo', '8591234567899'),
-('Coca Cola 0.5l', 35.00, 'Napoj', '5449000000996'), -- ID 11
-('Coca Cola Zero 0.5l', 35.00, 'Napoj', '5449000000997'),
-('Voda neperlivá 0.5l', 20.00, 'Napoj', '8590000000001'),
-('Voda jemně perlivá', 20.00, 'Napoj', '8590000000002'),
-('Ledový čaj citron', 32.00, 'Napoj', '8590000000003'),
-('Ledový čaj broskev', 32.00, 'Napoj', '8590000000004'),
-('Monster Energy', 45.00, 'Napoj', '8590000000005'),
-('Monster Zero', 45.00, 'Napoj', '8590000000006'),
-('Tiger Energy', 30.00, 'Napoj', '8590000000007');
+( N'Tatranka lísková', 15.00, N'Jidlo', N'8591234567890'), -- ID 1
+( N'Tatranka mléčná', 15.00, N'Jidlo', N'8591234567891'),
+( N'Fidorka mléčná kokos', 20.00, N'Jidlo', N'8591234567892'),
+( N'Fidorka bílá', 20.00, N'Jidlo', N'8591234567893'),
+( N'Mila řezy', 18.00, N'Jidlo', N'8591234567894'),
+( N'Zlaté Polomáčené', 22.00, N'Jidlo', N'8591234567895'),
+( N'Twix', 25.00, N'Jidlo', N'8591234567896'),
+( N'Brambůrky solené', 30.00, N'Jidlo', N'8591234567897'),
+( N'Brambůrky česnekové', 30.00, N'Jidlo', N'8591234567898'),
+( N'Tuc mini krekry', 25.00, N'Jidlo', N'8591234567899'),
+( N'Coca Cola 0.5l', 35.00, N'Napoj', N'5449000000996'), -- ID 11
+( N'Coca Cola Zero 0.5l', 35.00, N'Napoj', N'5449000000997'),
+( N'Voda neperlivá 0.5l', 20.00, N'Napoj', N'8590000000001'),
+( N'Voda jemně perlivá', 20.00, N'Napoj', N'8590000000002'),
+( N'Ledový čaj citron', 32.00, N'Napoj', N'8590000000003'),
+( N'Ledový čaj broskev', 32.00, N'Napoj', N'8590000000004'),
+( N'Monster Energy', 45.00, N'Napoj', N'8590000000005'),
+( N'Monster Zero', 45.00, N'Napoj', N'8590000000006'),
+( N'Tiger Energy', 30.00, N'Napoj', N'8590000000007');
 
 -- 5. NASKLADNĚNÍ DO CENTRÁLNÍHO SKLADU
 -- Dáme tam od všeho hodně, ale od Tatranek a Coly málo, ať můžeme testovat objednávky

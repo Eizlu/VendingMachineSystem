@@ -4,14 +4,9 @@ namespace VendingMachineSystem.DAL
 {
     public abstract class BaseRepository
     {
-        // ---------------------------------------------------------
-        // KROK PRO TEBE:
-        // Místo textu "ZDE_VLOZ_SVUJ_STRING" vlož to, co jsi zkopírovala (Ctrl+V).
-        // Nech tam ten zavináč @ a ty uvozovky!
-        // Vypadá to třeba takto: @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=..."
-        // ---------------------------------------------------------
+        // ZMĚNA: Už tu není řetězec natvrdo, ale odkazujeme se na Singleton------------------------------------------------------
 
-        protected readonly string _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=VendingMachineDB;Integrated Security=True;TrustServerCertificate=True";
+        protected string _connectionString => DbConfig.Instance.ConnectionString;
 
         // Tato metoda slouží jako "výrobna" připojení
         protected SqlConnection GetConnection()

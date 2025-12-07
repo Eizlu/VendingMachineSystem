@@ -33,13 +33,27 @@
         @foreach (var polozka in Model)
         {
             // Pokud je potřeba objednat (méně než 10), řádek zežloutne
-            string trida = polozka.JePotrebaObjednat ? "table-warning" : "";
+            string trida = "";
+            if (polozka.MnozstviNaCeste > 0)
+            {
+                trida = "table-info"; // Modrá
+            }
+            else if (polozka.JePotrebaObjednat)
+            {
+                trida = "table-warning"; // Žlutá
+            }
 
             <tr class="@trida">
                 <td>@polozka.NazevProduktu</td>
                 <td>@polozka.Mnozstvi ks</td>
                 <td>
-                    @if (polozka.JePotrebaObjednat)
+                    @if (polozka.MnozstviNaCeste > 0)
+                    {
+                        <span class="text-primary fw-bold">
+                            Na cestě: @polozka.MnozstviNaCeste ks
+                        </span>
+                    }
+                    else if (polozka.JePotrebaObjednat)
                     {
                         <strong class="text-danger">DOCHÁZÍ ZÁSOBY!</strong>
                     }
@@ -49,7 +63,11 @@
                     }
                 </td>
                 <td>
-                    @if (polozka.JePotrebaObjednat)
+                    @if (polozka.MnozstviNaCeste > 0)
+                    {
+                        <button class="btn btn-secondary btn-sm" disabled>Již objednáno</button>
+                    }
+                    else if (polozka.JePotrebaObjednat)
                     {
                         <form asp-action="VytvoritObjednavku" method="post" class="d-flex gap-2">
                             <input type="hidden" name="produktId" value="@polozka.ProduktId" />

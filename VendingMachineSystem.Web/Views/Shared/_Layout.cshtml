@@ -28,16 +28,18 @@
                         @if (Context.Session.GetString("Role") == "Administrator" || Context.Session.GetString("Role") == "Provozovatel")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-danger fw-bold" asp-controller="Report" asp-action="Index">Finanční Reporty</a>
+                                <a class="nav-link text-danger fw-bold" asp-controller="Report" asp-action="Index">Reporty</a>
                             </li>
                         }
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <span class="navbar-text me-3">Přihlášen: <strong>@Context.Session.GetString("JmenoUzivatele")</strong></span>
+                            <span class="navbar-text me-3 text-black">
+                                Přihlášen: <strong>@Context.Session.GetString("JmenoUzivatele")</strong>
+                            </span>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-outline-secondary btn-sm mt-1" asp-controller="Login" asp-action="Odhlasit">Odhlásit</a>
+                            <a class="btn btn-danger btn-sm mt-1" asp-controller="Login" asp-action="Odhlasit">Odhlásit</a>
                         </li>
                     </ul>
                 </div>

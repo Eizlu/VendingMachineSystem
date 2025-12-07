@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using VendingMachineSystem.Core;
 using VendingMachineSystem.DAL;
 
@@ -8,10 +9,34 @@ namespace VendingMachineSystem.BLL
     {
         private AutomatRepository _repository;
 
+        // Seznam posluchačů (Observerů)
+        private List<INotifikaceObserver> _observers = new List<INotifikaceObserver>();
+
         public AutomatService()
         {
             // Tady Mozek říká: "Budu potřebovat Skladníka"
             _repository = new AutomatRepository();
+
+            PripojitObserver(new DebugObserver());
+        }
+
+        public void PripojitObserver(INotifikaceObserver observer)
+        {
+            _observers.Add(observer);
+        }
+
+        public void OdpojitObserver(INotifikaceObserver observer)
+        {
+            _observers.Remove(observer);
+        }
+
+        // Metoda, která rozešle zprávu všem
+        private void Notifikovat(string zprava)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.PrijmoutNotifikaci(zprava);
+            }
         }
 
         // Metoda, kterou zavolá Webová stránka: "Dej mi seznam automatů"
@@ -30,6 +55,17 @@ namespace VendingMachineSystem.BLL
         // Metoda: Dej mi seznam zboží v tom automatu
         public List<ZasobaAutomatu> GetZasobyAutomatu(int id)
         {
+            var zasoby = _repository.GetZasoby(id);
+
+            foreach (var z in zasoby)
+            {
+                if (z.Mnozstvi < z.MinimaleLimit)
+                {
+                    // Spustíme poplach (Observer pattern v akci)
+                    Notifikovat($"POZOR: V automatu ID {id} dochází produkt {z.NazevProduktu} (Zbývá {z.Mnozstvi} ks).");
+                }
+            }
+
             return _repository.GetZasoby(id);
         }
 
@@ -51,6 +87,8 @@ namespace VendingMachineSystem.BLL
 
             // Pokud je vše OK, zavoláme skladníka
             _repository.DoplnitZasobu(zasobaId, mnozstvi);
+
+            Notifikovat($"Zásoba ID {zasobaId} byla doplněna o {mnozstvi} ks.");
         }
     }
 }
