@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace VendingMachineSystem.Core
 {
-    // Třída, která se "přetaví" do XML souboru
     public class ReportSkladu
     {
         public DateTime DatumGenerovani { get; set; }

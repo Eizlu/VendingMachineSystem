@@ -12,7 +12,6 @@ namespace VendingMachineSystem.Mobile
             InitializeComponent();
             _service = new AutomatService();
 
-            // Zobrazíme, kdo je přihlášen
             if (App.PrihlasenyUzivatel != null)
             {
                 LblUzivatel.Text = App.PrihlasenyUzivatel.Jmeno;
@@ -20,7 +19,6 @@ namespace VendingMachineSystem.Mobile
             }
         }
 
-        // TATO METODA SE SPUSTÍ AUTOMATICKY, KDYŽ SE STRÁNKA UKÁŽE
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -42,7 +40,6 @@ namespace VendingMachineSystem.Mobile
 
                 foreach (var automat in automaty)
                 {
-                    // Tady taky načteme zásoby pro náhled
                     var zasoby = _service.GetZasobyAutomatu(automat.Id);
                     var karta = VytvoritKartu(automat, zasoby);
                     SeznamAutomatuLayout.Children.Add(karta);
@@ -56,17 +53,13 @@ namespace VendingMachineSystem.Mobile
 
         private void OnLogoutClicked(object sender, EventArgs e)
         {
-            // 1. Vymazat uživatele
             App.PrihlasenyUzivatel = null;
 
-            // 2. Přepnout zpět na Login (reset aplikace)
             Application.Current.MainPage = new LoginPage();
         }
 
         private View VytvoritKartu(Automat automat, List<ZasobaAutomatu> zasoby)
         {
-            // ... kód z minulé zprávy ...
-            // (Pokud ho nemáš, řekni, pošlu ho znovu)
             var frame = new Frame
             {
                 BorderColor = Colors.LightGray,
@@ -79,7 +72,6 @@ namespace VendingMachineSystem.Mobile
 
             var stack = new VerticalStackLayout();
 
-            // Hlavička karty
             var header = new VerticalStackLayout { BackgroundColor = Color.FromArgb("#f8f9fa"), Padding = 15 };
             header.Children.Add(new Label { Text = automat.Lokalita, FontSize = 16, FontAttributes = FontAttributes.Bold, TextColor = Colors.Black });
 
@@ -89,10 +81,8 @@ namespace VendingMachineSystem.Mobile
 
             stack.Children.Add(header);
 
-            // Tělo karty - Seznam produktů (jako na webu)
             var body = new VerticalStackLayout { Padding = 15, Spacing = 5 };
 
-            // Vypíšeme prvních 5 produktů
             foreach (var z in zasoby.Take(5))
             {
                 var radek = new HorizontalStackLayout { Spacing = 10 };
@@ -110,7 +100,6 @@ namespace VendingMachineSystem.Mobile
             }
             stack.Children.Add(body);
 
-            // Patička - Tlačítko Detail
             var btnDetail = new Button
             {
                 Text = "Spravovat zásoby",
@@ -119,7 +108,6 @@ namespace VendingMachineSystem.Mobile
                 TextColor = Colors.White
             };
 
-            // Kliknutí otevře Detail stránku
             btnDetail.Clicked += async (s, e) => {
                 await Navigation.PushModalAsync(new DetailAutomatuPage(automat.Id));
             };

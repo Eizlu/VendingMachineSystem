@@ -21,12 +21,10 @@ namespace VendingMachineSystem.Mobile
         {
             LayoutZasoby.Children.Clear();
 
-            // 1. Naèteme info o automatu
             var automat = _service.GetInfoOAutomatu(_automatId);
             LblNadpis.Text = automat.Lokalita;
             LblInfo.Text = $"ID: {automat.Id} | Typ: {automat.Typ} | Stav: {automat.Stav}";
 
-            // 2. Naèteme zásoby
             var zasoby = _service.GetZasobyAutomatu(_automatId);
 
             foreach (var z in zasoby)
@@ -36,24 +34,19 @@ namespace VendingMachineSystem.Mobile
             }
         }
 
-        // TATO METODA JE KOMPLETNÌ PØEPSANÁ PRO LEPŠÍ DESIGN
         private View VytvoritRadekProduktu(ZasobaAutomatu z)
         {
             bool jeMalo = z.Mnozstvi < z.MinimaleLimit;
 
-            // Hlavní rámeèek (Karta produktu)
             var frame = new Frame
             {
                 Padding = 15,
                 CornerRadius = 12,
                 BackgroundColor = Colors.White,
                 HasShadow = true,
-                BorderColor = jeMalo ? Colors.Red : Colors.Transparent // Èervený okraj, pokud dochází
+                BorderColor = jeMalo ? Colors.Red : Colors.Transparent 
             };
 
-            // Použijeme Grid pro lepší zarovnání
-            // Øádek 0: Název a Množství
-            // Øádek 1: Formuláø pro doplnìní (jen když je potøeba)
             var grid = new Grid
             {
                 RowDefinitions = new RowDefinitionCollection { new RowDefinition { Height = GridLength.Auto }, new RowDefinition { Height = GridLength.Auto } },
@@ -61,7 +54,6 @@ namespace VendingMachineSystem.Mobile
                 RowSpacing = 10
             };
 
-            // 1. Název produktu (Vlevo)
             var lblNazev = new Label
             {
                 Text = z.NazevProduktu,
@@ -70,9 +62,8 @@ namespace VendingMachineSystem.Mobile
                 TextColor = Colors.Black,
                 VerticalOptions = LayoutOptions.Center
             };
-            grid.Add(lblNazev, 0, 0); // Sloupec 0, Øádek 0
+            grid.Add(lblNazev, 0, 0); 
 
-            // 2. Množství (Vpravo)
             var lblMnozstvi = new Label
             {
                 Text = $"{z.Mnozstvi} ks",
@@ -82,20 +73,17 @@ namespace VendingMachineSystem.Mobile
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.End
             };
-            grid.Add(lblMnozstvi, 1, 0); // Sloupec 1, Øádek 0
+            grid.Add(lblMnozstvi, 1, 0); 
 
 
-            // 3. Sekce pro doplnìní (zobrazí se jen když je málo)
             if (jeMalo)
             {
-                // Vytvoøíme pod-grid pro formuláø
                 var gridForm = new Grid
                 {
                     ColumnDefinitions = new ColumnDefinitionCollection { new ColumnDefinition { Width = GridLength.Star }, new ColumnDefinition { Width = GridLength.Auto } },
                     ColumnSpacing = 10
                 };
 
-                // Vstupní pole
                 var vstup = new Entry
                 {
                     Placeholder = "Poèet ks",
@@ -105,19 +93,17 @@ namespace VendingMachineSystem.Mobile
                     HeightRequest = 40
                 };
 
-                // Tlaèítko Doplnit
                 var btn = new Button
                 {
                     Text = "Doplnit",
                     FontSize = 14,
                     FontAttributes = FontAttributes.Bold,
                     HeightRequest = 40,
-                    BackgroundColor = Color.FromArgb("#0d6efd"), // Modrá bootstrap barva
+                    BackgroundColor = Color.FromArgb("#0d6efd"),
                     TextColor = Colors.White,
                     CornerRadius = 8
                 };
 
-                // AKCE TLAÈÍTKA
                 btn.Clicked += async (s, e) =>
                 {
                     if (int.TryParse(vstup.Text, out int mnozstvi))
@@ -126,7 +112,7 @@ namespace VendingMachineSystem.Mobile
                         {
                             _service.DoplnitZbozi(z.Id, mnozstvi);
                             await DisplayAlert("Hotovo", $"Doplnìno {mnozstvi} ks.", "OK");
-                            NaèístData(); // Refresh stránky
+                            NaèístData(); 
                         }
                         catch (Exception ex)
                         {
@@ -139,11 +125,9 @@ namespace VendingMachineSystem.Mobile
                     }
                 };
 
-                // Pøidání do formuláøového gridu
-                gridForm.Add(vstup, 0, 0); // Vstup pøes vìtšinu šíøky
-                gridForm.Add(btn, 1, 0);   // Tlaèítko vpravo
+                gridForm.Add(vstup, 0, 0); 
+                gridForm.Add(btn, 1, 0);  
 
-                // Pøidání formuláøe do hlavního gridu (do druhého øádku, roztažené pøes oba sloupce)
                 grid.Add(gridForm, 0, 1);
                 Grid.SetColumnSpan(gridForm, 2);
             }

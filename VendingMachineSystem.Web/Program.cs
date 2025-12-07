@@ -1,7 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSession(); // <--- PØIDAT TOTO
-builder.Services.AddHttpContextAccessor(); // <--- PØIDAT TOTO
+builder.Services.AddSession(); 
+builder.Services.AddHttpContextAccessor(); 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -20,7 +20,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession(); // <--- PØIDAT TOTO
+app.UseSession(); 
 
 app.UseAuthorization();
 

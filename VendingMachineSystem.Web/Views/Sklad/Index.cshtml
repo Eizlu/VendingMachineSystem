@@ -32,15 +32,14 @@
     <tbody>
         @foreach (var polozka in Model)
         {
-            // Pokud je potřeba objednat (méně než 10), řádek zežloutne
             string trida = "";
             if (polozka.MnozstviNaCeste > 0)
             {
-                trida = "table-info"; // Modrá
+                trida = "table-info";
             }
             else if (polozka.JePotrebaObjednat)
             {
-                trida = "table-warning"; // Žlutá
+                trida = "table-warning";
             }
 
             <tr class="@trida">

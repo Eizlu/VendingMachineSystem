@@ -5,20 +5,18 @@ namespace VendingMachineSystem.DAL
 {
     public class UzivatelRepository : BaseRepository
     {
-        // Metoda ověří uživatele a vrátí ho, pokud existuje
         public Uzivatel Login(string login, string heslo)
         {
             Uzivatel uzivatel = null;
 
             using (var connection = GetConnection())
             {
-                // SQL dotaz: Hledáme shodu loginu a hesla
                 string sql = "SELECT Id, Jmeno, Login, Role FROM Uzivatel WHERE Login = @login AND Heslo = @heslo";
 
                 using (var command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@login", login);
-                    command.Parameters.AddWithValue("@heslo", heslo); // Poznámka: V reálu by heslo mělo být hashované
+                    command.Parameters.AddWithValue("@heslo", heslo); 
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -36,7 +34,7 @@ namespace VendingMachineSystem.DAL
                     }
                 }
             }
-            return uzivatel; // Vrátí null, pokud se přihlášení nepovedlo
+            return uzivatel; 
         }
     }
 }

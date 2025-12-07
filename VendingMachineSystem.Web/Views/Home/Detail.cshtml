@@ -2,7 +2,6 @@
 @model List<ZasobaAutomatu>
 
 @{
-    // Vytáhneme si info o automatu z "batohu"
     var automat = ViewBag.Automat as Automat;
     ViewData["Title"] = "Detail automatu";
 }
@@ -39,8 +38,6 @@
         <tbody>
             @foreach (var polozka in Model)
             {
-                // Jednoduchá logika pro barvení řádku
-                // Pokud je množství menší než limit, řádek zčervená
                 string tridaRadku = polozka.Mnozstvi < polozka.MinimaleLimit ? "table-danger" : "";
 
                 <tr class="@tridaRadku">

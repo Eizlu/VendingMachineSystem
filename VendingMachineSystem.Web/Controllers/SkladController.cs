@@ -23,7 +23,6 @@ namespace VendingMachineSystem.Web.Controllers
         {
             try
             {
-                // Předáme zadané množství do BLL
                 _service.ObjednatZbozi(produktId, mnozstvi);
 
                 TempData["Zprava"] = "Objednávka byla úspěšně vytvořena a odeslána dodavateli.";
@@ -31,7 +30,6 @@ namespace VendingMachineSystem.Web.Controllers
             }
             catch (ArgumentException ex)
             {
-                // Chyba validace (např. záporné číslo)
                 TempData["Zprava"] = ex.Message;
                 TempData["TypZpravy"] = "danger";
             }
@@ -43,7 +41,6 @@ namespace VendingMachineSystem.Web.Controllers
         {
             _service.VygenerovatAExportovatReport();
 
-            // Vrátíme se na seznam a zobrazíme zprávu (přes TempData)
             TempData["Zprava"] = "Report byl uložen do XML souboru v kořenové složce projektu.";
             return RedirectToAction("Index");
         }

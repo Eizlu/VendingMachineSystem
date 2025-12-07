@@ -12,13 +12,11 @@ namespace VendingMachineSystem.Web.Controllers
             _service = new UzivatelService();
         }
 
-        // Zobrazí formulář (GET)
         public IActionResult Index()
         {
             return View();
         }
 
-        // Zpracuje odeslaný formulář (POST)
         [HttpPost]
         public IActionResult Prihlasit(string login, string heslo)
         {
@@ -26,16 +24,13 @@ namespace VendingMachineSystem.Web.Controllers
 
             if (uzivatel != null)
             {
-                // Uložíme uživatele do "paměti" prohlížeče (Session)
                 HttpContext.Session.SetString("JmenoUzivatele", uzivatel.Jmeno);
                 HttpContext.Session.SetString("Role", uzivatel.Role);
 
-                // Přesměrujeme na hlavní dashboard
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                // Chyba - vrátíme ho zpátky na login
                 ViewBag.Chyba = "Špatné jméno nebo heslo!";
                 return View("Index");
             }

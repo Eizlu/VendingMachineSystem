@@ -13,14 +13,13 @@ namespace VendingMachineSystem.DAL
 
             using (var connection = GetConnection())
             {
-                // SQL AGREGACE: Sčítáme kusy a tržby, seskupujeme podle názvu
                 string sql = @"
                     SELECT p.Nazev, COUNT(*) as Kusy, SUM(pr.Cena) as Trzba
                     FROM Prodej pr
                     JOIN Produkt p ON pr.ProduktId = p.Id
                     WHERE pr.DatumProdeje >= @od AND pr.DatumProdeje <= @do
                     GROUP BY p.Nazev
-                    ORDER BY Trzba DESC"; // Seřadíme od nejvýdělečnějšího
+                    ORDER BY Trzba DESC"; 
 
                 using (var command = new SqlCommand(sql, connection))
                 {

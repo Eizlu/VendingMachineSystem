@@ -14,7 +14,6 @@ namespace VendingMachineSystem.BLL
 
         public Uzivatel OveritUzivatele(string login, string heslo)
         {
-            // Tady by mohla být další logika (např. kontrola, jestli není účet zamčený)
             return _repository.Login(login, heslo);
         }
     }

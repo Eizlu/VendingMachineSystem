@@ -12,7 +12,6 @@ namespace VendingMachineSystem.DAL
 
             using (var connection = GetConnection())
             {
-                // Spojíme tabulku skladu s tabulkou produktů
                 string sql = @"
                     SELECT 
                         z.Id, 
